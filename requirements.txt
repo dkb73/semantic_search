@@ -1,0 +1,4 @@
+pymongo
+google-generativeai
+faiss-cpu
+numpy

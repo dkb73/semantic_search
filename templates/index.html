@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hostel Search</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #f8f9fa;
+            --accent-color: #ff6b6b;
+            --text-color: #333;
+            --light-gray: #e9ecef;
+            --dark-gray: #6c757d;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-color);
+            background-color: #f5f7fa;
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: white;
+            padding: 1.5rem 0;
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .tagline {
+            color: var(--dark-gray);
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        #search-container {
+            margin: 3rem auto;
+            max-width: 700px;
+            position: relative;
+        }
+        
+        .search-box {
+            display: flex;
+            box-shadow: var(--box-shadow);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            background: white;
+        }
+        
+        input {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+        }
+        
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        
+        button:hover {
+            background-color: #3a5a8f;
+        }
+        
+        button i {
+            margin-right: 8px;
+        }
+        
+        #results {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 2rem;
+            padding-bottom: 3rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-img {
+            height: 200px;
+            background-color: var(--light-gray);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .ratings-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .ratings-badge i {
+            color: #ffd700;
+            margin-left: 5px;
+        }
+        
+        .card-content {
+            padding: 20px;
+        }
+        
+        .card h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+        
+        .location {
+            display: flex;
+            align-items: center;
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+        }
+        
+        .location i {
+            margin-right: 5px;
+            font-size: 0.8rem;
+        }
+        
+        .description {
+            margin-bottom: 15px;
+            color: #555;
+            font-size: 0.95rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .feature-tag {
+            background-color: var(--secondary-color);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--dark-gray);
+        }
+        
+        .room-types {
+            margin-bottom: 15px;
+        }
+        
+        .room-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .price {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+        }
+        
+        .price small {
+            font-size: 0.8rem;
+            font-weight: normal;
+            color: var(--dark-gray);
+        }
+        
+        .contact-link {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: background-color 0.3s;
+        }
+        
+        .contact-link:hover {
+            background-color: #3a5a8f;
+        }
+        
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        @media (max-width: 768px) {
+            #results {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .search-box {
+                flex-direction: column;
+            }
+            
+            button {
+                padding: 12px;
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Hostel Finder</h1>
+            <p class="tagline">Find your perfect student accommodation</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div id="search-container">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search by location, facilities, or budget...">
+                <button onclick="searchHostels()"><i class="fas fa-search"></i> Search</button>
+            </div>
+        </div>
+        <div id="results"></div>
+    </div>
+
+    <script>
+        // Sample placeholder images for demo
+        const placeholderImages = [
+            "/api/placeholder/350/200",
+            "/api/placeholder/350/200", 
+            "/api/placeholder/350/200"
+        ];
+
+        function searchHostels() {
+            let query = document.getElementById("searchInput").value;
+            if (!query) {
+                alert("Please enter a search query.");
+                return;
+            }
+
+            fetch("/search", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ query: query })
+            })
+            .then(response => response.json())
+            .then(data => {
+                let resultsDiv = document.getElementById("results");
+                resultsDiv.innerHTML = "";
+
+                if (data.length === 0) {
+                    resultsDiv.innerHTML = `
+                        <div class="no-results">
+                            <i class="fas fa-search" style="font-size: 3rem; color: var(--light-gray); margin-bottom: 15px;"></i>
+                            <h3>No results found</h3>
+                            <p>Try different keywords or filters</p>
+                        </div>`;
+                    return;
+                }
+
+                data.forEach((hostel, index) => {
+                    // Use modulo to cycle through placeholder images
+                    const imageIndex = index % placeholderImages.length;
+                    
+                    // Limit facilities to 3 for display
+                    const facilities = hostel.facilities.slice(0, 3);
+                    const hasMoreFacilities = hostel.facilities.length > 3;
+                    
+                    let card = document.createElement("div");
+                    card.className = "card";
+                    card.innerHTML = `
+                        <div class="card-img">
+                            <img src="${placeholderImages[imageIndex]}" alt="${hostel.name}">
+                            <div class="ratings-badge">${hostel.ratings} <i class="fas fa-star"></i></div>
+                        </div>
+                        <div class="card-content">
+                            <h3>${hostel.name}</h3>
+                            <div class="location">
+                                <i class="fas fa-map-marker-alt"></i> ${hostel.location}
+                            </div>
+                            <p class="description">${hostel.description}</p>
+                            <div class="features">
+                                ${facilities.map(facility => `<span class="feature-tag">${facility}</span>`).join('')}
+                                ${hasMoreFacilities ? `<span class="feature-tag">+${hostel.facilities.length - 3} more</span>` : ''}
+                            </div>
+                            <div class="room-types">
+                                <div class="room-title">Room Types:</div>
+                                <div class="features">
+                                    ${hostel.room_types.map(type => `<span class="feature-tag">${type}</span>`).join('')}
+                                </div>
+                            </div>
+                            <div class="price">
+                                ₹${formatNumber(hostel.monthly_rent)} <small>/ month</small>
+                            </div>
+                            <a href="tel:${hostel.contact}" class="contact-link"><i class="fas fa-phone"></i> Contact</a>
+                        </div>`;
+                    resultsDiv.appendChild(card);
+                });
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                let resultsDiv = document.getElementById("results");
+                resultsDiv.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-exclamation-circle" style="font-size: 3rem; color: var(--accent-color); margin-bottom: 15px;"></i>
+                        <h3>Something went wrong</h3>
+                        <p>Please try again later</p>
+                    </div>`;
+            });
+        }
+
+        // Format numbers with commas (e.g., 12,000)
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+    </script>
+</body>
+</html>
