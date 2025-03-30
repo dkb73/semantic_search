@@ -3,4 +3,5 @@ google-generativeai==0.3.2
 numpy==1.26.4
 pymongo==4.6.2
 python-dotenv==1.0.1
+--find-links https://conda.anaconda.org/conda-forge/linux-64/
 faiss-cpu==1.7.4
