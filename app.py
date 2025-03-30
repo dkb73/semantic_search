@@ -4,8 +4,25 @@ import faiss
 import numpy as np
 from pymongo import MongoClient
 from bson import ObjectId
+import os
+from dotenv import load_dotenv
 import config
 import html
+
+# Load environment variables
+load_dotenv()
+
+# Get environment variables
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+MONGO_URI = os.getenv("MONGO_URI")
+
+if not GEMINI_API_KEY:
+    st.error("GEMINI_API_KEY not found in environment variables")
+    st.stop()
+
+if not MONGO_URI:
+    st.error("MONGO_URI not found in environment variables")
+    st.stop()
 
 # Set page configuration
 st.set_page_config(
@@ -292,15 +309,15 @@ def render_stars(rating):
 
 # Configure Gemini API
 try:
-    genai.configure(api_key=config.GEMINI_API_KEY)
+    genai.configure(api_key=GEMINI_API_KEY)
 except Exception as e:
     st.error(f"Error configuring Gemini API: {e}")
 
 # Connect to MongoDB Atlas
 try:
-    client = MongoClient(config.MONGO_URI)
-    db = client[config.DB_NAME]
-    hostel_collection = db[config.COLLECTION_NAME]
+    client = MongoClient(MONGO_URI)
+    db = client["hostelDB"]
+    hostel_collection = db["hostels"]
     # Connection successful, but no need to show success message to keep UI clean
 except Exception as e:
     st.error(f"Error connecting to MongoDB Atlas: {e}")

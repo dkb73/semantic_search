@@ -3,3 +3,6 @@ google-generativeai==0.3.2
 faiss-cpu==1.7.4
 numpy==1.26.4
 pymongo==4.6.2
+python-dotenv==1.0.1
+--find-links https://dl.fbaipublicfiles.com/faiss/wheel/faiss_cpu-1.7.4-cp39-cp39-linux_x86_64.whl
+faiss-cpu==1.7.4
